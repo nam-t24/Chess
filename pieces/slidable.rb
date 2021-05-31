@@ -44,7 +44,6 @@ module Slidable
 
             valid=true
             valid=false if !board.valid_pos?(pos);
-            # debugger
             if(valid && board.empty?(pos))
                 moves << pos
             elsif(valid)

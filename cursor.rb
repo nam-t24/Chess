@@ -33,12 +33,13 @@ MOVES = {
 class Cursor
 
   attr_reader :cursor_pos, :board
-  attr_accessor :toggle_color
+  attr_accessor :toggle_color, :toggle_move_options
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
     @toggle_color=:light_cyan
+    @toggle_move_options=false
   end
 
   def get_input
@@ -88,6 +89,9 @@ class Cursor
       return nil
     when :ctrl_c
       Process.exit(0)
+    when :tab
+      @toggle_move_options == false ? @toggle_move_options = true : @toggle_move_options = false;
+      return nil
     else
       puts key
     end
@@ -96,7 +100,6 @@ class Cursor
   def update_pos(diff)
     move_pos = MOVES[diff]
     new_pos = [@cursor_pos[0]+move_pos[0], @cursor_pos[1]+move_pos[1]]
-    # @cursor_pos = new_pos if ((0..7).to_a.include?(new_pos[0]) && (0..7).to_a.include?(new_pos[1]));
     @cursor_pos = new_pos if @board.valid_pos?(new_pos);
     return nil
   end

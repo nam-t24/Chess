@@ -25,6 +25,8 @@ class Game
                 retry
             end
         end
+        system("clear")
+        display.render_board
         #swap turn to get winner
         swap_turn!
         puts "#{current_player} has won! Good Game"

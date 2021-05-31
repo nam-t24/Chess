@@ -5,32 +5,11 @@ class Board
     attr_reader :board
     def initialize(new_board=true)
         @empty = NullPiece.instance
+        #empty board
         @board= Array.new(8) {Array.new(8,@empty)}
+        
         #filling board
-        if(new_board==true)
-            #creates the piece object but does not directly add into the board(piece object does that in initialization)
-            #filling back(black) row
-            back_pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-            back_pieces.each_with_index do |piece, col_idx|
-                pos=[0,col_idx]
-                piece.new(:blue, self, pos)
-            end
-            #filling front(white) row
-            back_pieces.each_with_index do |piece, col_idx|
-                pos=[7,col_idx]
-                piece.new(:red, self, pos)
-            end
-            #filling black pawns
-            (0..7).each do |col_idx|
-                pos=[1,col_idx]
-                Pawn.new(:blue, self, pos)
-            end
-            #filling white pawns
-            (0..7).each do |col_idx|
-                pos=[6,col_idx]
-                Pawn.new(:red, self, pos)
-            end
-        end
+        self.fill_rows if(new_board==true);
         "Board created"
     end
 
@@ -70,14 +49,12 @@ class Board
         raise ("Invalid end position") if !self[start_pos].moves.include?(end_pos);
         raise ("You are in check, can't move like that") if !self[start_pos].valid_moves.include?(end_pos);
 
-        
-
         move_piece!(start_pos, end_pos)
-        
     end
 
     def move_piece!(start_pos, end_pos)
         raise 'piece cannot move like that' unless self[start_pos].moves.include?(end_pos)
+
         self[end_pos] = self[start_pos]
         self[start_pos]=@empty
         self[end_pos].pos=end_pos
@@ -93,25 +70,15 @@ class Board
     end
 
     #renders board with position coordinates
-    def render
-        puts "  #{(0..7).to_a.join(" ")}"
-        @board.each_with_index do |row,idx|
-            row_arr=[]
-            row.each {|piece| row_arr << piece.symbol}
-            puts "#{idx} #{row_arr.join(" ")}"
-        end
-        ""
-    end
-
-    def find_king(color)
-        @board.each_with_index do |row, row_idx|
-            row.each_with_index do |piece, col_idx|
-                pos = [row_idx, col_idx]
-                return pos if (piece.is_a?(King) && piece.color==color);
-            end
-        end
-        nil
-    end
+    # def render
+    #     puts "  #{(0..7).to_a.join(" ")}"
+    #     @board.each_with_index do |row,idx|
+    #         row_arr=[]
+    #         row.each {|piece| row_arr << piece.symbol}
+    #         puts "#{idx} #{row_arr.join(" ")}"
+    #     end
+    #     ""
+    # end
 
     def in_check?(color)
         king_pos = find_king(color)
@@ -140,8 +107,37 @@ class Board
             piece.valid_moves.empty?
         end
     end
+
+    private
+    def fill_rows
+        colors=[:blue, :red]
+        colors.each do |color|
+            color == :blue ? row = 0 : row = 7;
+            back_pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+            back_pieces.each_with_index do |piece, col_idx|
+                pos=[row,col_idx]
+                piece.new(color, self, pos)
+            end
+            color == :blue ? row = 1 : row = 6;
+            (0..7).each do |col_idx|
+                pos=[row,col_idx]
+                Pawn.new(color, self, pos)
+            end
+        end
+    end
+
+    def find_king(color)
+        @board.each_with_index do |row, row_idx|
+            row.each_with_index do |piece, col_idx|
+                pos = [row_idx, col_idx]
+                return pos if (piece.is_a?(King) && piece.color==color);
+            end
+        end
+        nil
+    end
 end
 
+#fools mate
 # board=Board.new
 # board.move_piece!([6,5],[5,5])
 # board.move_piece!([6,6],[4,6])
@@ -149,5 +145,3 @@ end
 # board.move_piece!([0,3],[4,7])
 # board.render
 # p board.checkmate?(:blue)
-
-

@@ -6,7 +6,7 @@ module Stepable
             xcurr, ycurr = pos
             new_pos=[xcurr+dx, ycurr+dy]
             #check if new position is valid
-            next unless ((0..7).to_a.include?(new_pos[0]) && (0..7).to_a.include?(new_pos[1]))
+            next unless valid_pos?(new_pos)
 
             if(board.empty?(new_pos))
                 moves<<new_pos
@@ -16,9 +16,15 @@ module Stepable
         end
         moves
     end
+
     private
     def move_type
         #overwritten in class
         #gives an array of moves like lateral/diagonal
+    end
+
+    def valid_pos?(pos)
+        x,y = pos
+        ((0...8).to_a.include?(x) && (0...8).to_a.include?(y))
     end
 end

@@ -27,7 +27,6 @@ class Display
     end
 
     def render
-        # puts "  #{(0..7).to_a.join(" ")}"
         system("clear")
         puts "Use arrow keys or WASD to move, space or enter to confirm. (Ctrl + 'c' to exit)"
 

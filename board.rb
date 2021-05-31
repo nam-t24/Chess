@@ -102,9 +102,6 @@ class Board
         end
         ""
     end
-    def to_s
-        ""
-    end
 
     def find_king(color)
         @board.each_with_index do |row, row_idx|

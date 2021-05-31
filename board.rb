@@ -62,14 +62,15 @@ class Board
     end
 
     def move_piece(curr_color, start_pos, end_pos)
+        raise ("Invalid start position") if !valid_pos?(start_pos);
+        raise ("Start position is empty") if self[start_pos]==@empty;
+        raise ("Invalid end position") if !valid_pos?(end_pos);
         raise ("Must be your own color") if self[start_pos].color != curr_color;
         raise ("Cannot take your own color") if self[end_pos].color == curr_color;
         raise ("Invalid end position") if !self[start_pos].moves.include?(end_pos);
         raise ("You are in check, can't move like that") if !self[start_pos].valid_moves.include?(end_pos);
 
-        raise ("Invalid start position") if !valid_pos?(start_pos);
-        raise ("Start position is empty") if self[start_pos]==@empty;
-        raise ("Invalid end position") if !valid_pos?(end_pos);
+        
 
         move_piece!(start_pos, end_pos)
         

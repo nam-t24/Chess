@@ -1,7 +1,7 @@
 require 'singleton'
 require_relative 'piece_parent'
 class NullPiece < Piece
-    include Singleton
+    # include Singleton
     attr_reader :symbol, :color
     def initialize
         @symbol= " "

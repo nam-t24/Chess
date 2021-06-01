@@ -30,7 +30,8 @@ class Display
     def render
         system("clear")
         puts "Use arrow keys or WASD to move, space or enter to confirm. (Ctrl + 'c' to exit)"
-        puts "Press tab to toggle move options for selected piece"
+        puts "Press tab to toggle move options for selected piece; esc to save current game"
+        # puts "Press esc to save current game"
         self.render_board
         @notifications.each do |_key, val|
             puts val

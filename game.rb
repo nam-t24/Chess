@@ -1,3 +1,5 @@
+require 'yaml'
+require "byebug"
 require_relative 'board'
 require_relative 'display'
 require_relative 'HumanPlayer'
@@ -15,7 +17,9 @@ class Game
     def play
         until board.checkmate?(current_player)
             begin
-                start_pos, end_pos = players[current_player].make_move(board)
+                pos = players[current_player].make_move(board)
+                save_game() if pos == :escape;
+                start_pos, end_pos = pos
                 board.move_piece(current_player, start_pos, end_pos)
 
                 swap_turn!
@@ -43,9 +47,16 @@ class Game
     def swap_turn!
         @current_player = current_player == :red ? :blue: :red
     end
+
+    private
+    def save_game
+        puts "Enter file name to be saved under"
+        filename=gets.chomp
+        File.write(filename, self.to_yaml)
+        exit(0)
+    end
 end
 
 if $PROGRAM_NAME == __FILE__
-  game = Game.new
-  game.play
+    ARGV.count == 0 ? Game.new.play : YAML.load_file(ARGV.shift).play;
 end

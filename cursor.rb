@@ -92,6 +92,8 @@ class Cursor
     when :tab
       @toggle_move_options == false ? @toggle_move_options = true : @toggle_move_options = false;
       return nil
+    when :escape
+      return :escape
     else
       puts key
     end

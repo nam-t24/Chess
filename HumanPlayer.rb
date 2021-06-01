@@ -13,11 +13,13 @@ class HumanPlayer < Player
             if input==0
                 puts "#{color} - Choose starting position"
                 start_pos = @display.cursor.get_input
+                return :escape if start_pos == :escape;
                 display.reset! if start_pos
                 input +=1 if start_pos != nil
             else
                 puts "#{color} - Choose end position"
                 end_pos = @display.cursor.get_input
+                return :escape if end_pos == :escape;
                 display.reset! if end_pos
                 input +=1 if end_pos != nil
             end

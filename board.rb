@@ -4,7 +4,8 @@ require_relative 'load_pieces'
 class Board
     attr_reader :board
     def initialize(new_board=true)
-        @empty = NullPiece.instance
+        @empty = NullPiece.new #(create object instead of isntance to be able to save games in YAML format)
+        # @empty = NullPiece.instance (use instance with non saving game option. Yaml doesn't work well with singleton)
         #empty board
         @board= Array.new(8) {Array.new(8,@empty)}
         

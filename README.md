@@ -21,4 +21,3 @@
 
 - Use esc key to save current game (done through YAML)
   - To run saved game, use command `ruby game.rb {saved file name}` (e.g., `ruby game.rb saved`)
-- Computer AI player possibly in the making 😄
